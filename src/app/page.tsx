@@ -14,7 +14,7 @@ export default function Page() {
 
       {/* Background */}
       <div className="absolute inset-0 -z-10">
-        <PixelBlast
+        {/*<PixelBlast
             variant="square"
             pixelSize={3}
             color="#B497CF"
@@ -32,7 +32,7 @@ export default function Page() {
             speed={0.5}
             edgeFade={0.25}
             transparent
-          />
+          />*/}
       </div>
 
       {/* Hero Section */}
