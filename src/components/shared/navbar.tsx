@@ -2,8 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { List, SignOut, Sparkle, Layout, User } from "@phosphor-icons/react";
+import { List, SignOut, Layout, User } from "@phosphor-icons/react";
 import { useAuth } from "@/hooks/use-auth";
 import {
   Sheet,
@@ -19,10 +20,24 @@ const Navbar = () => {
   const { data: user } = useMe();
 
   const navLinks = [
-    { label: "Features", href: "#features" },
+    { label: "How It Work", href: "#howitworks" },
     { label: "Themes", href: "#themes" },
     ...(user ? [{ label: "My Profile", href: "/profile" }] : []),
   ];
+
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetId = href.replace(/.*\#/, "");
+      const elem = document.getElementById(targetId);
+      if (elem) {
+        elem.scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
 
   return (
     <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between w-[95%] max-w-5xl px-3 py-2.5 backdrop-blur-xl bg-background/60 supports-[backdrop-filter]:bg-background/40 border border-border/40 rounded-full shadow-sm transition-all duration-300">
@@ -30,8 +45,8 @@ const Navbar = () => {
       {/* ── LOGO & BRAND ── */}
       <div className="flex items-center pl-3">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-105 transition-all">
-            <Sparkle weight="fill" size={16} className="text-primary" />
+          <div className="w-8 h-8 rounded-full flex items-center justify-center group-hover:scale-105 transition-all overflow-hidden">
+            <Image src="/android-chrome-192x192.png" alt="Cevio Logo" width={32} height={32} className="object-cover" />
           </div>
           <span className="text-lg font-extrabold tracking-tight hidden sm:inline-block">
             Cevio
@@ -45,6 +60,7 @@ const Navbar = () => {
           <Link
             key={link.label}
             href={link.href}
+            onClick={(e) => handleScroll(e, link.href)}
             className="text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
           >
             {link.label}
@@ -113,8 +129,8 @@ const Navbar = () => {
           <SheetContent side="right" className="w-[300px] sm:w-[400px] px-4 border-l-border/40 bg-background/80 backdrop-blur-xl">
             <SheetHeader className="text-left pb-6 border-b border-border/40">
               <SheetTitle className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Sparkle weight="fill" size={16} className="text-primary" />
+                <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
+                  <Image src="/android-chrome-192x192.png" alt="Cevio Logo" width={32} height={32} className="object-cover" />
                 </div>
                 <span className="text-xl font-extrabold tracking-tight">Cevio</span>
               </SheetTitle>
@@ -127,6 +143,7 @@ const Navbar = () => {
                   <SheetClose key={link.label} asChild>
                     <Link
                       href={link.href}
+                      onClick={(e) => handleScroll(e, link.href)}
                       className="text-lg font-bold p-2 rounded-lg hover:bg-primary/5 hover:text-primary transition-all flex items-center justify-between group"
                     >
                       {link.label}

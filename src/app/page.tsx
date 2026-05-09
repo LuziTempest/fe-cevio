@@ -13,8 +13,9 @@ import {
   Sparkle,
   FilePdf
 } from "@phosphor-icons/react";
-import { Link } from "lucide-react";
 import { redirect } from "next/navigation";
+import Image from "next/image";
+import PixelBlast from "@/components/custom/pixel-blast/pixel-blast";
 
 const steps = [
   {
@@ -45,19 +46,35 @@ export default function Page() {
       <Navbar />
       <ModeToggle />
 
+      {/* Pixel Blast Background */}
+      <div className="absolute top-0 left-0 w-full h-[800px] pointer-events-none opacity-50 dark:opacity-30">
+        <PixelBlast
+          variant="square"
+          pixelSize={4}
+          color="#B497CF"
+          patternScale={2}
+          patternDensity={1}
+          pixelSizeJitter={0}
+          enableRipples
+          rippleSpeed={0.4}
+          rippleThickness={0.12}
+          rippleIntensityScale={1.5}
+          liquid={false}
+          liquidStrength={0.12}
+          liquidRadius={1.2}
+          liquidWobbleSpeed={5}
+          speed={0.5}
+          edgeFade={0.25}
+          transparent
+        />
+      </div>
+
       {/* Decorative Background Glow */}
       <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/20 blur-[120px] rounded-full pointer-events-none -z-10" />
 
       {/* ── HERO SECTION ── */}
-      <section className="relative flex flex-col items-center justify-center pt-32 pb-20 px-6 text-center">
-        <div className="max-w-4xl mx-auto space-y-8 z-10">
-
-          {/* Badge: AI Feature */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-full bg-primary/10 text-primary border border-primary/20 animate-in fade-in slide-in-from-bottom-4 duration-1000 cursor-default hover:bg-primary/15 transition-colors">
-            <Sparkle weight="fill" className="text-primary animate-pulse" />
-            Cevio AI 2.0 is now live
-          </div>
-
+      <section className="relative flex flex-col items-center justify-center pt-32 pb-20 px-6 text-center min-h-screen">
+        <div className="max-w-4xl mx-auto space-y-8 z-10 pt-16 md:pt-32">
           {/* Headline - Added Gradient for visual impact */}
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
             Your CV Deserves{" "}
@@ -119,45 +136,10 @@ export default function Page() {
             </p>
           </div>
         </div>
-
-        {/* ── VISUAL SHOWCASE (New Addition) ── */}
-        {/* Ini memberikan gambaran visual prosesnya agar user langsung paham */}
-        <div className="w-full max-w-5xl mx-auto mt-20 relative animate-in fade-in slide-in-from-bottom-24 duration-1000 delay-700">
-          <div className="rounded-2xl border bg-card/50 backdrop-blur-xl p-2 shadow-2xl">
-            <div className="rounded-xl overflow-hidden border bg-background flex flex-col md:flex-row items-center justify-between p-8 gap-8">
-
-              {/* Left: Boring PDF */}
-              <div className="flex-1 w-full flex flex-col items-center justify-center p-8 border-2 border-dashed border-muted-foreground/20 rounded-xl bg-muted/10">
-                <FilePdf size={64} className="text-muted-foreground/50 mb-4" />
-                <p className="font-mono text-sm text-muted-foreground">resume_final_v3.pdf</p>
-              </div>
-
-              {/* Middle: AI Magic */}
-              <div className="flex-shrink-0 flex flex-col items-center gap-2">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
-                  <Sparkle size={24} className="text-primary" />
-                </div>
-                <span className="text-xs font-semibold text-primary uppercase tracking-widest">AI Parsing</span>
-              </div>
-
-              {/* Right: Beautiful Website */}
-              <div className="flex-1 w-full bg-gradient-to-br from-primary/5 to-purple-500/5 rounded-xl border p-4 shadow-inner">
-                <div className="w-full h-4 bg-muted/50 rounded-full mb-3" />
-                <div className="w-3/4 h-8 bg-foreground/10 rounded-md mb-6" />
-                <div className="space-y-2">
-                  <div className="w-full h-3 bg-muted rounded-full" />
-                  <div className="w-5/6 h-3 bg-muted rounded-full" />
-                  <div className="w-4/6 h-3 bg-muted rounded-full" />
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section className="py-32 px-6 border-t border-border/40 relative bg-muted/10">
+      <section id="howitworks" className="py-32 px-6 border-t border-border/40 relative">
         <div className="max-w-5xl mx-auto">
           <div className="text-center space-y-4 mb-20">
             <h2 className="text-3xl md:text-5xl font-bold text-foreground">
@@ -189,6 +171,53 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ── THEME SHOWCASE ── */}
+      <section id="themes" className="py-32 px-6 border-t border-border/40 relative bg-background">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center space-y-4 mb-20">
+            <h2 className="text-3xl md:text-5xl font-bold text-foreground">
+              Stunning Themes for Every Profession
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Choose from our premium, responsive templates. Switch themes instantly without losing your data.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { id: "minimalist", name: "Minimalist", img: "/theme/minimalist.png", desc: "Clean, modern, and content-focused. Perfect for developers and writers." },
+              { id: "professional", name: "Professional", img: "/theme/professional.png", desc: "Classic and structured. Ideal for corporate roles, management, and finance." },
+              { id: "creative", name: "Creative", img: "/theme/creative.png", desc: "Bold, expressive, and unique. Best for designers and creatives." },
+            ].map((theme) => (
+              <div key={theme.id} className="group relative flex flex-col rounded-2xl overflow-hidden border bg-card hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted border-b">
+                  <Image 
+                    src={theme.img} 
+                    alt={`${theme.name} Theme Preview`} 
+                    fill 
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                    <span className="text-white font-medium flex items-center gap-2">
+                      Preview {theme.name} <ArrowRight size={16} />
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-xl text-foreground">{theme.name}</h3>
+                    <Palette size={20} className="text-primary/70" />
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {theme.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── BOTTOM CTA ── */}
       <section className="py-32 px-6 text-center relative overflow-hidden">
         {/* Glow effect for bottom CTA */}
@@ -199,7 +228,7 @@ export default function Page() {
             Ready to Stand Out?
           </h2>
           <p className="text-xl text-muted-foreground">
-            Don't let another recruiter skip your PDF. Get your professional Cevio link and make a lasting first impression.
+            Don&apos;t let another recruiter skip your PDF. Get your professional Cevio link and make a lasting first impression.
           </p>
 
           <ul className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm font-medium text-foreground py-4">
@@ -212,7 +241,7 @@ export default function Page() {
           </ul>
 
           <div className="flex flex-col items-center gap-4">
-            <Button onClick={() => redirect("/register")} size="lg" className="h-14 px-10 text-lg gap-2 group shadow-lg shadow-primary/20 hover:scale-105 transition-all duration-300">
+            <Button onClick={() => redirect("/signup")} size="lg" className="h-14 px-10 text-lg gap-2 group shadow-lg shadow-primary/20 hover:scale-105 transition-all duration-300">
               Generate My Portfolio
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Button>
