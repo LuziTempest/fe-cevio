@@ -33,16 +33,16 @@ export default function MinimalTheme({ data }: { data: PortfolioData }) {
             <h1 className="text-3xl font-semibold tracking-tight">{data.name}</h1>
             <p className="text-zinc-500 dark:text-zinc-400 text-lg">{data.role}</p>
           </div>
-          {data.profileImage && (
+
             <div className="relative w-20 h-20 rounded-full overflow-hidden grayscale contrast-125">
               <Image
-                src={data.profileImage}
+                src={data.profileImage || "https://images.unsplash.com/photo-1773332611550-9f5a465b4e42?q=80&w=1470&auto=format&fit=crop"}
                 alt={data.name}
                 fill
                 className="object-cover"
               />
             </div>
-          )}
+
         </header>
 
         {/* About Section */}

@@ -27,35 +27,69 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { dummyData } from "@/data/dummy";
-import { PortfolioData } from "@/types/portfolio";
+import { usePortfolioStore } from "@/store/use-portfolio-store";
+import { usePortfolio } from "@/hooks/use-portfolio";
+import { PortfolioData, PortfolioContent } from "@/types/portfolio";
+import { toast } from "sonner";
 
-type ThemeType = "minimal" | "professional" | "creative";
+type ThemeType = "minimalist" | "professional" | "creative";
 
 export default function SandboxPage() {
   const router = useRouter();
-  const [activeTheme, setActiveTheme] = useState<ThemeType>("minimal");
-  const [portfolioData, setPortfolioData] = useState<PortfolioData>(dummyData);
+  const { generatedData, activeTheme: storeTheme, setActiveTheme: setStoreTheme } = usePortfolioStore();
+  const { save, uploadPhoto } = usePortfolio();
+  
+  const [activeTheme, setActiveTheme] = useState<ThemeType>(storeTheme as ThemeType || "professional");
+  const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const [savedLink, setSavedLink] = useState<string | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState<string>("");
+  const [portfolioTitle, setPortfolioTitle] = useState("");
   
   const { setTheme, resolvedTheme } = useTheme();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    if (!generatedData) {
+      router.push("/generate");
+      return;
+    }
+    
+    // Transform backend data to frontend template format
+    const transformed: PortfolioData = {
+      name: generatedData.profil.nama,
+      role: generatedData.pengalaman_kerja?.[0]?.posisi || "Professional",
+      profileImage: profileImageUrl || "",
+      profile: generatedData.profil.deskripsi_diri,
+      experience: generatedData.pengalaman_kerja.map(exp => ({
+        position: exp.posisi,
+        company: exp.perusahaan,
+        duration: exp.durasi,
+        description: exp.deskripsi
+      })),
+      education: generatedData.pendidikan.map(edu => ({
+        degree: edu.jurusan,
+        institution: edu.institusi,
+        duration: edu.tahun
+      })),
+      skills: generatedData.keahlian,
+      languages: [] // Fallback for languages
+    };
+    
+    setPortfolioData(transformed);
+  }, [generatedData, router, profileImageUrl]);
 
   // Reset scroll position when theme changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, [activeTheme]);
+    setStoreTheme(activeTheme);
+  }, [activeTheme, setStoreTheme]);
 
   const themes: { id: ThemeType; label: string }[] = [
-    { id: "minimal", label: "Minimal Theme" },
+    { id: "minimalist", label: "Minimalist Theme" },
     { id: "professional", label: "Professional Theme" },
     { id: "creative", label: "Creative Theme" },
   ];
@@ -63,37 +97,55 @@ export default function SandboxPage() {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPortfolioData((prev) => ({
-          ...prev,
-          profileImage: reader.result as string,
-        }));
-        setIsImageDialogOpen(false);
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append("foto", file);
+      
+      uploadPhoto.mutate(formData, {
+        onSuccess: (response) => {
+          setProfileImageUrl(response.data.foto_url);
+          setIsImageDialogOpen(false);
+        }
+      });
     }
   };
 
   const handleSave = async () => {
-    setIsSaving(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
-    const randomSlug = Math.random().toString(36).substring(7);
-    setSavedLink(`https://cevio.app/p/${randomSlug}`);
-    setIsSaving(false);
-    
-    // Redirect to profile after a short delay to show success
-    setTimeout(() => {
-      router.push("/profile");
-    }, 500);
+    if (!portfolioTitle) {
+      toast.warning("Title Required", {
+        description: "Please provide a title for your portfolio"
+      });
+      return;
+    }
+
+    if (!generatedData) return;
+
+    const saveRequest = {
+      title: portfolioTitle,
+      tema_terpilih: activeTheme,
+      fokus_terpilih: "umum",
+      foto: profileImageUrl,
+      data: generatedData, // Send original backend format to the save API
+    };
+
+    save.mutate(saveRequest, {
+      onSuccess: (response) => {
+        const slug = portfolioTitle.toLowerCase().replace(/\s+/g, "-");
+        setSavedLink(`${window.location.origin}/p/${slug}`);
+        
+        // Redirect to profile after a short delay to show success
+        setTimeout(() => {
+          router.push("/profile");
+        }, 2000);
+      },
+    });
   };
 
   const copyToClipboard = () => {
     if (savedLink) {
       navigator.clipboard.writeText(savedLink);
-      alert("Link copied to clipboard!");
+      toast.success("Link Copied", {
+        description: "Portfolio URL has been copied to clipboard!"
+      });
     }
   };
 
@@ -104,13 +156,21 @@ export default function SandboxPage() {
   const resetSaveState = (open: boolean) => {
     setIsSaveDialogOpen(open);
     if (!open) {
-      // Small delay before resetting result so the transition looks clean
       setTimeout(() => {
         setSavedLink(null);
-        setIsSaving(false);
       }, 300);
     }
   };
+
+  // Add profile image to portfolio data if uploaded
+  const enhancedData: PortfolioData | null = portfolioData ? {
+    ...portfolioData,
+    profileImage: profileImageUrl 
+      ? `${process.env.NEXT_PUBLIC_API_URL}${profileImageUrl}` 
+      : portfolioData.profileImage
+  } : null;
+
+  if (!enhancedData) return null;
 
   return (
     <div className="relative">
@@ -124,9 +184,9 @@ export default function SandboxPage() {
       />
 
       {/* Dynamic Theme Rendering */}
-      {activeTheme === "minimal" && <MinimalTheme data={portfolioData} />}
-      {activeTheme === "professional" && <ProfessionalTheme data={portfolioData} />}
-      {activeTheme === "creative" && <CreativeTheme data={portfolioData} />}
+      {activeTheme === "minimalist" && <MinimalTheme data={enhancedData} />}
+      {activeTheme === "professional" && <ProfessionalTheme data={enhancedData} />}
+      {activeTheme === "creative" && <CreativeTheme data={enhancedData} />}
 
       {/* Control Panel (Fixed Bottom Left) */}
       <div className="fixed bottom-6 left-6 z-[100] flex items-center gap-2 p-1.5 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-2xl">
@@ -178,9 +238,18 @@ export default function SandboxPage() {
               <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="picture">Picture</Label>
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" onClick={triggerUpload} className="w-full justify-start text-muted-foreground font-normal">
-                    <Upload className="mr-2 h-4 w-4" />
-                    Upload an image file...
+                  <Button 
+                    variant="outline" 
+                    onClick={triggerUpload} 
+                    className="w-full justify-start text-muted-foreground font-normal"
+                    disabled={uploadPhoto.isPending}
+                  >
+                    {uploadPhoto.isPending ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Upload className="mr-2 h-4 w-4" />
+                    )}
+                    {uploadPhoto.isPending ? "Uploading..." : "Upload an image file..."}
                   </Button>
                 </div>
               </div>
@@ -211,23 +280,48 @@ export default function SandboxPage() {
                 <DialogHeader>
                   <DialogTitle>Save Portfolio</DialogTitle>
                   <DialogDescription>
-                    Are you sure you want to save and publish your portfolio? You can always edit it later.
+                    Give your portfolio a title to publish it.
                   </DialogDescription>
                 </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="title">Portfolio URL</Label>
+                    <div className="flex items-center w-full">
+                      <div className="flex items-center h-10 px-3 border border-r-0 rounded-l-md bg-muted text-muted-foreground text-[11px] sm:text-sm font-medium whitespace-nowrap">
+                        {process.env.NEXT_PUBLIC_URL || "cevio.app"}/p/
+                      </div>
+                      <Input 
+                        id="title" 
+                        placeholder="my-awesome-portfolio" 
+                        value={portfolioTitle}
+                        onChange={(e) => setPortfolioTitle(e.target.value.toLowerCase().replace(/\s+/g, "-"))}
+                        className="rounded-l-none focus-visible:ring-0 focus-visible:ring-offset-0 h-10"
+                      />
+                    </div>
+                    <p className="text-[10px] text-muted-foreground">
+                      This will be your unique portfolio address.
+                    </p>
+                    {save.isError && (
+                      <p className="text-xs text-destructive font-medium mt-1">
+                        {(save.error as any)?.response?.data?.message || "Something went wrong. Please try again."}
+                      </p>
+                    )}
+                  </div>
+                </div>
                 <DialogFooter className="sm:justify-end gap-2">
                   <Button
                     variant="ghost"
                     onClick={() => setIsSaveDialogOpen(false)}
-                    disabled={isSaving}
+                    disabled={save.isPending}
                   >
                     Cancel
                   </Button>
                   <Button 
                     onClick={handleSave} 
-                    disabled={isSaving}
+                    disabled={save.isPending || !portfolioTitle}
                     className="min-w-[100px]"
                   >
-                    {isSaving ? (
+                    {save.isPending ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Saving...
@@ -301,6 +395,7 @@ export default function SandboxPage() {
     </div>
   );
 }
+
 
 
 

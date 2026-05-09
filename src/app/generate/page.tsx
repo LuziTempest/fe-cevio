@@ -21,7 +21,10 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { usePortfolio } from "@/hooks/use-portfolio";
+import { usePortfolioStore } from "@/store/use-portfolio-store";
+import { Loader2 } from "lucide-react";
 
 const themes = [
   {
@@ -45,6 +48,9 @@ const themes = [
 ];
 
 export default function GeneratePage() {
+  const router = useRouter();
+  const { generate } = usePortfolio();
+  const { setGeneratedData, setActiveTheme } = usePortfolioStore();
   const [selectedTheme, setSelectedTheme] = useState("professional");
   const [file, setFile] = useState<File | null>(null);
 
@@ -52,6 +58,23 @@ export default function GeneratePage() {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
+  };
+
+  const handleGenerate = () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("theme", selectedTheme);
+    // You can also add focus here if you have it in UI
+
+    generate.mutate(formData, {
+      onSuccess: (response) => {
+        setGeneratedData(response.data.data);
+        setActiveTheme(selectedTheme);
+        router.push("/generate/result");
+      },
+    });
   };
 
   return (
@@ -129,6 +152,7 @@ export default function GeneratePage() {
                       accept=".pdf"
                       className="hidden"
                       onChange={handleFileChange}
+                      disabled={generate.isPending}
                     />
                   </label>
                 </CardContent>
@@ -150,7 +174,7 @@ export default function GeneratePage() {
                         ? "border-primary ring-2 ring-primary/20 shadow-lg"
                         : "border-transparent hover:border-primary/30"
                       }`}
-                      onClick={() => setSelectedTheme(theme.id)}
+                      onClick={() => !generate.isPending && setSelectedTheme(theme.id)}
                     >
                       <div className={`h-24 w-full rounded-t-lg ${theme.preview} flex items-center justify-center`}>
                         <div className="w-1/2 h-1/2 rounded bg-white/20 backdrop-blur-md border border-white/30" />
@@ -203,13 +227,28 @@ export default function GeneratePage() {
 
                   <Button
                     className="w-full h-12 gap-2 text-sm font-bold uppercase tracking-wider group"
-                    disabled={!file}
-                    onClick={() => redirect("/generate/result")}
+                    disabled={!file || generate.isPending}
+                    onClick={handleGenerate}
                   >
-                    <Sparkle size={18} weight="fill" />
-                    Generate Now
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    {generate.isPending ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkle size={18} weight="fill" />
+                        Generate Now
+                        <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
                   </Button>
+                  
+                  {generate.isError && (
+                    <p className="text-xs text-destructive text-center font-medium">
+                      {(generate.error as any)?.response?.data?.message || "Generation failed. Please try again."}
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             </div>

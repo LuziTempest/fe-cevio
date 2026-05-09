@@ -61,18 +61,16 @@ export default function ProfessionalTheme({ data }: { data: PortfolioData }) {
         </div>
 
         <div className="relative z-10 space-y-6">
-          {data.profileImage && (
             <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full overflow-hidden border-2 border-primary p-1">
               <div className="relative w-full h-full rounded-full overflow-hidden">
                 <Image
-                  src={data.profileImage}
+                  src={data.profileImage || "https://images.unsplash.com/photo-1773332611550-9f5a465b4e42?q=80&w=1470&auto=format&fit=crop"}
                   alt={data.name}
                   fill
                   className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
                 />
               </div>
             </div>
-          )}
           <div className="space-y-2">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter uppercase">{data.name}</h1>
             <p className="text-xl md:text-2xl text-muted-foreground font-light tracking-widest uppercase">{data.role}</p>

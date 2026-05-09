@@ -155,7 +155,7 @@ function AboutMe({ data, setPage }: { data: PortfolioData; setPage: (p: string) 
         <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-4">
           <div className="rounded-lg overflow-hidden w-full sm:w-1/2 md:w-full lg:w-1/2 relative aspect-3/4 border-lg border-muted-foreground">
             <Image
-              src={data.profileImage}
+              src={data.profileImage || "https://images.unsplash.com/photo-1773332611550-9f5a465b4e42?q=80&w=1470&auto=format&fit=crop"}
               alt={data.name}
               width={600}
               height={800}
