@@ -1,0 +1,913 @@
+{
+  "info": {
+    "_postman_id": "71970417-b482-42b7-a7a7-dfe16f6452c5",
+    "name": "Cevio",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21938140",
+    "_collection_link": "https://go.postman.co/collection/21938140-71970417-b482-42b7-a7a7-dfe16f6452c5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Hamzah Ali Abdillah\",\n    \"email\": \"abdillahhamzahali@gmail.com\",\n    \"password\": \"jombang14\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASEURL}}/api/auth/register",
+              "host": [
+                "{{BASEURL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Hamzah Ali Abdillah\",\n    \"email\": \"abdillahhamzahali@gmail.com\",\n    \"password\": \"jombang14\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASEURL}}/api/auth/register",
+                  "host": [
+                    "{{BASEURL}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "CREATED",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Werkzeug/3.1.8 Python/3.14.4"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 08:39:56 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "221"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"created_at\": \"Sat, 09 May 2026 15:39:56 GMT\",\n        \"email\": \"abdillahhamzahali@gmail.com\",\n        \"id\": 1,\n        \"name\": \"Hamzah Ali Abdillah\"\n    },\n    \"message\": \"Registrasi berhasil\",\n    \"status\": \"success\"\n}"
+            },
+            {
+              "name": "Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Hamzah Ali Abdillah\",\n    \"email\": \"abdillahhamzahali@gmail.com\",\n    \"password\": \"jombang14\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASEURL}}/api/auth/register",
+                  "host": [
+                    "{{BASEURL}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "BAD REQUEST",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Werkzeug/3.1.8 Python/3.14.4"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 08:40:25 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "62"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Email sudah terdaftar\",\n    \"status\": \"error\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = JSON.parse(responseBody);",
+                  "pm.collectionVariables(\"token\", res.data.token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"abdillahhamzahali@gmail.com\",\n    \"password\": \"jombang14\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASEURL}}/api/auth/login",
+              "host": [
+                "{{BASEURL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"abdillahhamzahali@gmail.com\",\n    \"password\": \"jombang14\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASEURL}}/api/auth/login",
+                  "host": [
+                    "{{BASEURL}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Werkzeug/3.1.8 Python/3.14.4"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 08:41:17 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "382"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3Nzg0MDI0Nzd9.tY9v7kZuadn_0sjOAfyw_6tqxUT-yVDCCA4bjVDubaE\",\n        \"user\": {\n            \"created_at\": \"Sat, 09 May 2026 15:39:56 GMT\",\n            \"email\": \"abdillahhamzahali@gmail.com\",\n            \"id\": 1,\n            \"name\": \"Hamzah Ali Abdillah\"\n        }\n    },\n    \"message\": \"Login berhasil\",\n    \"status\": \"success\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASEURL}}/api/auth/me",
+              "host": [
+                "{{BASEURL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASEURL}}/api/auth/me",
+                  "host": [
+                    "{{BASEURL}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Werkzeug/3.1.8 Python/3.14.4"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 08:48:53 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "230"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"created_at\": \"Sat, 09 May 2026 15:39:56 GMT\",\n        \"email\": \"abdillahhamzahali@gmail.com\",\n        \"id\": 1,\n        \"name\": \"Hamzah Ali Abdillah\"\n    },\n    \"message\": \"Data profil berhasil diambil\",\n    \"status\": \"success\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Portofolio",
+      "item": [
+        {
+          "name": "generate",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "61e73565-878b-4641-89e6-e046305b32f4",
+                  "src": "/home/cachyanno/Downloads/cv-template.pdf"
+                },
+                {
+                  "key": "theme",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "ea977f14-18f5-456c-8ab2-96a9c66869b8"
+                },
+                {
+                  "key": "focus",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "7683dd9e-665c-48be-b892-7457f56e562e"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASEURL}}/api/portfolios/generate",
+              "host": [
+                "{{BASEURL}}"
+              ],
+              "path": [
+                "api",
+                "portfolios",
+                "generate"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "61e73565-878b-4641-89e6-e046305b32f4",
+                      "src": "/home/cachyanno/Downloads/cv-template.pdf"
+                    },
+                    {
+                      "key": "theme",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "ea977f14-18f5-456c-8ab2-96a9c66869b8"
+                    },
+                    {
+                      "key": "focus",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "7683dd9e-665c-48be-b892-7457f56e562e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{BASEURL}}/api/portfolios/generate",
+                  "host": [
+                    "{{BASEURL}}"
+                  ],
+                  "path": [
+                    "api",
+                    "portfolios",
+                    "generate"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Werkzeug/3.1.8 Python/3.14.4"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 09:00:40 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "2576"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"data\": {\n            \"keahlian\": [],\n            \"pendidikan\": [\n                {\n                    \"institusi\": \"University/Universities\",\n                    \"jurusan\": \"Degree and Subject\",\n                    \"tahun\": \"2000-2003\"\n                }\n            ],\n            \"pengalaman_kerja\": [\n                {\n                    \"deskripsi\": [\n                        \"Advised client’s Digital Media division on £3M international expansion, coordinating a team of 8 analysts during initial research phase\",\n                        \"Structured and negotiated equipment deal financing including credit purchases, rentals, and 31 lease contracts worth $745k\"\n                    ],\n                    \"durasi\": \"Sep-07 – Aug-10\",\n                    \"perusahaan\": \"Official Company Name\",\n                    \"posisi\": \"Job title\"\n                },\n                {\n                    \"deskripsi\": [\n                        \"Make sure your work experience comes to life, consider what someone reading your CV would be most interested in\",\n                        \"Avoid any negativity or short comings on your CV that may raise the wrong questions\"\n                    ],\n                    \"durasi\": \"Jun-05 – Sep-07\",\n                    \"perusahaan\": \"Official Company Name\",\n                    \"posisi\": \"Job title\"\n                },\n                {\n                    \"deskripsi\": [\n                        \"Try to ensure your CV is easy to scan, start bullet points with relevant action verbs\",\n                        \"You can also include significant relevant voluntary experience in your work experience if it is applicable\"\n                    ],\n                    \"durasi\": \"Mar-04 – Jun-05\",\n                    \"perusahaan\": \"Official Company Name\",\n                    \"posisi\": \"Job title\"\n                },\n                {\n                    \"deskripsi\": [\n                        \"Use past tense for roles you have completed\",\n                        \"Please set dates using the abbreviated month and two digits for the year, you must include months as well as years\"\n                    ],\n                    \"durasi\": \"Aug-03 – Mar-04\",\n                    \"perusahaan\": \"Official Company Name\",\n                    \"posisi\": \"Job title\"\n                }\n            ],\n            \"profil\": {\n                \"deskripsi_diri\": \"Seorang profesional yang berdedikasi dengan rekam jejak yang terbukti dalam memberikan hasil yang luar biasa. Memiliki kemampuan analitis yang kuat dan fokus pada pencapaian target. Siap untuk berkontribusi pada kesuksesan tim dengan keahlian dan pengalaman yang dimiliki.\",\n                \"email\": \"professional email address\",\n                \"github\": \"\",\n                \"linkedin\": \"\",\n                \"nama\": \"Forename SURNAME\"\n            },\n            \"proyek\": []\n        },\n        \"fokus_terpilih\": \"\",\n        \"tema_terpilih\": \"\",\n        \"user\": \"Hamzah Ali Abdillah\"\n    },\n    \"message\": \"Portofolio berhasil di-generate!\",\n    \"status\": \"success\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Save portofolio",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"HamzahAli\",\n    \"tema_terpilih\": \"profesional\",\n    \"fokus_terpilih\": \"pengalaman\",\n    \"foto\": \"/static/uploads/user_1/foto_profil.jpg\",\n    \"data\": {\n        \"profil\": {\n            \"nama\": \"Budi Santoso\",\n            \"email\": \"budi@example.com\",\n            \"linkedin\": \"linkedin.com/in/budisantoso\",\n            \"github\": \"github.com/budi\",\n            \"deskripsi_diri\": \"Seorang software engineer berpengalaman 5 tahun di bidang backend.\"\n        },\n        \"pendidikan\": [\n            {\n                \"institusi\": \"Universitas Indonesia\",\n                \"jurusan\": \"Teknik Informatika\",\n                \"tahun\": \"2015 - 2019\"\n            }\n        ],\n        \"pengalaman_kerja\": [\n            {\n                \"posisi\": \"Backend Developer\",\n                \"perusahaan\": \"Tech Startup ID\",\n                \"durasi\": \"2020 - Sekarang\",\n                \"deskripsi\": [\n                    \"Membangun API menggunakan Python Flask\",\n                    \"Mengoptimalkan query database PostgreSQL\"\n                ]\n            }\n        ],\n        \"proyek\": [\n            {\n                \"nama_proyek\": \"Cevio Portfolio Generator\",\n                \"deskripsi\": \"Aplikasi berbasis AI untuk membuat portofolio otomatis.\",\n                \"teknologi\": [\n                    \"Python\",\n                    \"Flask\",\n                    \"Gemini AI\"\n                ]\n            }\n        ],\n        \"keahlian\": [\n            \"Python\",\n            \"PostgreSQL\",\n            \"Docker\",\n            \"REST API\"\n        ]\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASEURL}}/api/portfolios",
+              "host": [
+                "{{BASEURL}}"
+              ],
+              "path": [
+                "api",
+                "portfolios"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"HamzahAli\",\n    \"tema_terpilih\": \"profesional\",\n    \"fokus_terpilih\": \"pengalaman\",\n    \"foto\": \"/static/uploads/user_1/foto_profil.jpg\",\n    \"data\": {\n        \"profil\": {\n            \"nama\": \"Budi Santoso\",\n            \"email\": \"budi@example.com\",\n            \"linkedin\": \"linkedin.com/in/budisantoso\",\n            \"github\": \"github.com/budi\",\n            \"deskripsi_diri\": \"Seorang software engineer berpengalaman 5 tahun di bidang backend.\"\n        },\n        \"pendidikan\": [\n            {\n                \"institusi\": \"Universitas Indonesia\",\n                \"jurusan\": \"Teknik Informatika\",\n                \"tahun\": \"2015 - 2019\"\n            }\n        ],\n        \"pengalaman_kerja\": [\n            {\n                \"posisi\": \"Backend Developer\",\n                \"perusahaan\": \"Tech Startup ID\",\n                \"durasi\": \"2020 - Sekarang\",\n                \"deskripsi\": [\n                    \"Membangun API menggunakan Python Flask\",\n                    \"Mengoptimalkan query database PostgreSQL\"\n                ]\n            }\n        ],\n        \"proyek\": [\n            {\n                \"nama_proyek\": \"Cevio Portfolio Generator\",\n                \"deskripsi\": \"Aplikasi berbasis AI untuk membuat portofolio otomatis.\",\n                \"teknologi\": [\n                    \"Python\",\n                    \"Flask\",\n                    \"Gemini AI\"\n                ]\n            }\n        ],\n        \"keahlian\": [\n            \"Python\",\n            \"PostgreSQL\",\n            \"Docker\",\n            \"REST API\"\n        ]\n    }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASEURL}}/api/portfolios",
+                  "host": [
+                    "{{BASEURL}}"
+                  ],
+                  "path": [
+                    "api",
+                    "portfolios"
+                  ]
+                }
+              },
+              "status": "CREATED",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Werkzeug/3.1.8 Python/3.14.4"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 09:22:36 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "100"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 2\n    },\n    \"message\": \"Portofolio berhasil disimpan\",\n    \"status\": \"success\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get my portofolio",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"tema_terpilih\": \"profesional\",\n    \"fokus_terpilih\": \"pengalaman\",\n    \"foto\": \"/static/uploads/user_1/foto_profil.jpg\",\n    \"data\": {\n        \"profil\": {\n            \"nama\": \"Budi Santoso\",\n            \"email\": \"budi@example.com\",\n            \"linkedin\": \"linkedin.com/in/budisantoso\",\n            \"github\": \"github.com/budi\",\n            \"deskripsi_diri\": \"Seorang software engineer berpengalaman 5 tahun di bidang backend.\"\n        },\n        \"pendidikan\": [\n            {\n                \"institusi\": \"Universitas Indonesia\",\n                \"jurusan\": \"Teknik Informatika\",\n                \"tahun\": \"2015 - 2019\"\n            }\n        ],\n        \"pengalaman_kerja\": [\n            {\n                \"posisi\": \"Backend Developer\",\n                \"perusahaan\": \"Tech Startup ID\",\n                \"durasi\": \"2020 - Sekarang\",\n                \"deskripsi\": [\n                    \"Membangun API menggunakan Python Flask\",\n                    \"Mengoptimalkan query database PostgreSQL\"\n                ]\n            }\n        ],\n        \"proyek\": [\n            {\n                \"nama_proyek\": \"Cevio Portfolio Generator\",\n                \"deskripsi\": \"Aplikasi berbasis AI untuk membuat portofolio otomatis.\",\n                \"teknologi\": [\n                    \"Python\",\n                    \"Flask\",\n                    \"Gemini AI\"\n                ]\n            }\n        ],\n        \"keahlian\": [\n            \"Python\",\n            \"PostgreSQL\",\n            \"Docker\",\n            \"REST API\"\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "{{BASEURL}}/api/portfolios",
+              "host": [
+                "{{BASEURL}}"
+              ],
+              "path": [
+                "api",
+                "portfolios"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"tema_terpilih\": \"profesional\",\n    \"fokus_terpilih\": \"pengalaman\",\n    \"foto\": \"/static/uploads/user_1/foto_profil.jpg\",\n    \"data\": {\n        \"profil\": {\n            \"nama\": \"Budi Santoso\",\n            \"email\": \"budi@example.com\",\n            \"linkedin\": \"linkedin.com/in/budisantoso\",\n            \"github\": \"github.com/budi\",\n            \"deskripsi_diri\": \"Seorang software engineer berpengalaman 5 tahun di bidang backend.\"\n        },\n        \"pendidikan\": [\n            {\n                \"institusi\": \"Universitas Indonesia\",\n                \"jurusan\": \"Teknik Informatika\",\n                \"tahun\": \"2015 - 2019\"\n            }\n        ],\n        \"pengalaman_kerja\": [\n            {\n                \"posisi\": \"Backend Developer\",\n                \"perusahaan\": \"Tech Startup ID\",\n                \"durasi\": \"2020 - Sekarang\",\n                \"deskripsi\": [\n                    \"Membangun API menggunakan Python Flask\",\n                    \"Mengoptimalkan query database PostgreSQL\"\n                ]\n            }\n        ],\n        \"proyek\": [\n            {\n                \"nama_proyek\": \"Cevio Portfolio Generator\",\n                \"deskripsi\": \"Aplikasi berbasis AI untuk membuat portofolio otomatis.\",\n                \"teknologi\": [\n                    \"Python\",\n                    \"Flask\",\n                    \"Gemini AI\"\n                ]\n            }\n        ],\n        \"keahlian\": [\n            \"Python\",\n            \"PostgreSQL\",\n            \"Docker\",\n            \"REST API\"\n        ]\n    }\n}"
+                },
+                "url": {
+                  "raw": "{{BASEURL}}/api/portfolios",
+                  "host": [
+                    "{{BASEURL}}"
+                  ],
+                  "path": [
+                    "api",
+                    "portfolios"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Werkzeug/3.1.8 Python/3.14.4"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 09:17:18 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1569"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"created_at\": \"Sat, 09 May 2026 16:16:13 GMT\",\n            \"data\": {\n                \"keahlian\": [\n                    \"Python\",\n                    \"PostgreSQL\",\n                    \"Docker\",\n                    \"REST API\"\n                ],\n                \"pendidikan\": [\n                    {\n                        \"institusi\": \"Universitas Indonesia\",\n                        \"jurusan\": \"Teknik Informatika\",\n                        \"tahun\": \"2015 - 2019\"\n                    }\n                ],\n                \"pengalaman_kerja\": [\n                    {\n                        \"deskripsi\": [\n                            \"Membangun API menggunakan Python Flask\",\n                            \"Mengoptimalkan query database PostgreSQL\"\n                        ],\n                        \"durasi\": \"2020 - Sekarang\",\n                        \"perusahaan\": \"Tech Startup ID\",\n                        \"posisi\": \"Backend Developer\"\n                    }\n                ],\n                \"profil\": {\n                    \"deskripsi_diri\": \"Seorang software engineer berpengalaman 5 tahun di bidang backend.\",\n                    \"email\": \"budi@example.com\",\n                    \"github\": \"github.com/budi\",\n                    \"linkedin\": \"linkedin.com/in/budisantoso\",\n                    \"nama\": \"Budi Santoso\"\n                },\n                \"proyek\": [\n                    {\n                        \"deskripsi\": \"Aplikasi berbasis AI untuk membuat portofolio otomatis.\",\n                        \"nama_proyek\": \"Cevio Portfolio Generator\",\n                        \"teknologi\": [\n                            \"Python\",\n                            \"Flask\",\n                            \"Gemini AI\"\n                        ]\n                    }\n                ]\n            },\n            \"focus\": \"pengalaman\",\n            \"foto\": \"/static/uploads/user_1/foto_profil.jpg\",\n            \"id\": 1,\n            \"theme\": \"profesional\"\n        }\n    ],\n    \"message\": \"Daftar portofolio berhasil diambil\",\n    \"status\": \"success\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get By Title",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"tema_terpilih\": \"profesional\",\n    \"fokus_terpilih\": \"pengalaman\",\n    \"foto\": \"/static/uploads/user_1/foto_profil.jpg\",\n    \"data\": {\n        \"profil\": {\n            \"nama\": \"Budi Santoso\",\n            \"email\": \"budi@example.com\",\n            \"linkedin\": \"linkedin.com/in/budisantoso\",\n            \"github\": \"github.com/budi\",\n            \"deskripsi_diri\": \"Seorang software engineer berpengalaman 5 tahun di bidang backend.\"\n        },\n        \"pendidikan\": [\n            {\n                \"institusi\": \"Universitas Indonesia\",\n                \"jurusan\": \"Teknik Informatika\",\n                \"tahun\": \"2015 - 2019\"\n            }\n        ],\n        \"pengalaman_kerja\": [\n            {\n                \"posisi\": \"Backend Developer\",\n                \"perusahaan\": \"Tech Startup ID\",\n                \"durasi\": \"2020 - Sekarang\",\n                \"deskripsi\": [\n                    \"Membangun API menggunakan Python Flask\",\n                    \"Mengoptimalkan query database PostgreSQL\"\n                ]\n            }\n        ],\n        \"proyek\": [\n            {\n                \"nama_proyek\": \"Cevio Portfolio Generator\",\n                \"deskripsi\": \"Aplikasi berbasis AI untuk membuat portofolio otomatis.\",\n                \"teknologi\": [\n                    \"Python\",\n                    \"Flask\",\n                    \"Gemini AI\"\n                ]\n            }\n        ],\n        \"keahlian\": [\n            \"Python\",\n            \"PostgreSQL\",\n            \"Docker\",\n            \"REST API\"\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "{{BASEURL}}/api/portfolios/:title",
+              "host": [
+                "{{BASEURL}}"
+              ],
+              "path": [
+                "api",
+                "portfolios",
+                ":title"
+              ],
+              "variable": [
+                {
+                  "key": "title",
+                  "value": "hamzahali"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"tema_terpilih\": \"profesional\",\n    \"fokus_terpilih\": \"pengalaman\",\n    \"foto\": \"/static/uploads/user_1/foto_profil.jpg\",\n    \"data\": {\n        \"profil\": {\n            \"nama\": \"Budi Santoso\",\n            \"email\": \"budi@example.com\",\n            \"linkedin\": \"linkedin.com/in/budisantoso\",\n            \"github\": \"github.com/budi\",\n            \"deskripsi_diri\": \"Seorang software engineer berpengalaman 5 tahun di bidang backend.\"\n        },\n        \"pendidikan\": [\n            {\n                \"institusi\": \"Universitas Indonesia\",\n                \"jurusan\": \"Teknik Informatika\",\n                \"tahun\": \"2015 - 2019\"\n            }\n        ],\n        \"pengalaman_kerja\": [\n            {\n                \"posisi\": \"Backend Developer\",\n                \"perusahaan\": \"Tech Startup ID\",\n                \"durasi\": \"2020 - Sekarang\",\n                \"deskripsi\": [\n                    \"Membangun API menggunakan Python Flask\",\n                    \"Mengoptimalkan query database PostgreSQL\"\n                ]\n            }\n        ],\n        \"proyek\": [\n            {\n                \"nama_proyek\": \"Cevio Portfolio Generator\",\n                \"deskripsi\": \"Aplikasi berbasis AI untuk membuat portofolio otomatis.\",\n                \"teknologi\": [\n                    \"Python\",\n                    \"Flask\",\n                    \"Gemini AI\"\n                ]\n            }\n        ],\n        \"keahlian\": [\n            \"Python\",\n            \"PostgreSQL\",\n            \"Docker\",\n            \"REST API\"\n        ]\n    }\n}"
+                },
+                "url": {
+                  "raw": "{{BASEURL}}/api/portfolios/:title",
+                  "host": [
+                    "{{BASEURL}}"
+                  ],
+                  "path": [
+                    "api",
+                    "portfolios",
+                    ":title"
+                  ],
+                  "variable": [
+                    {
+                      "key": "title",
+                      "value": "hamzahali"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Werkzeug/3.1.8 Python/3.14.4"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 09:24:31 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1492"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"created_at\": \"Sat, 09 May 2026 16:22:36 GMT\",\n        \"data\": {\n            \"keahlian\": [\n                \"Python\",\n                \"PostgreSQL\",\n                \"Docker\",\n                \"REST API\"\n            ],\n            \"pendidikan\": [\n                {\n                    \"institusi\": \"Universitas Indonesia\",\n                    \"jurusan\": \"Teknik Informatika\",\n                    \"tahun\": \"2015 - 2019\"\n                }\n            ],\n            \"pengalaman_kerja\": [\n                {\n                    \"deskripsi\": [\n                        \"Membangun API menggunakan Python Flask\",\n                        \"Mengoptimalkan query database PostgreSQL\"\n                    ],\n                    \"durasi\": \"2020 - Sekarang\",\n                    \"perusahaan\": \"Tech Startup ID\",\n                    \"posisi\": \"Backend Developer\"\n                }\n            ],\n            \"profil\": {\n                \"deskripsi_diri\": \"Seorang software engineer berpengalaman 5 tahun di bidang backend.\",\n                \"email\": \"budi@example.com\",\n                \"github\": \"github.com/budi\",\n                \"linkedin\": \"linkedin.com/in/budisantoso\",\n                \"nama\": \"Budi Santoso\"\n            },\n            \"proyek\": [\n                {\n                    \"deskripsi\": \"Aplikasi berbasis AI untuk membuat portofolio otomatis.\",\n                    \"nama_proyek\": \"Cevio Portfolio Generator\",\n                    \"teknologi\": [\n                        \"Python\",\n                        \"Flask\",\n                        \"Gemini AI\"\n                    ]\n                }\n            ]\n        },\n        \"focus\": \"pengalaman\",\n        \"foto\": \"/static/uploads/user_1/foto_profil.jpg\",\n        \"id\": 2,\n        \"theme\": \"profesional\",\n        \"title\": \"hamzahali\"\n    },\n    \"message\": \"Detail portofolio publik berhasil diambil\",\n    \"status\": \"success\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "item": [
+        {
+          "name": "Upload Foto",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "foto",
+                  "type": "file",
+                  "uuid": "61e73565-878b-4641-89e6-e046305b32f4",
+                  "src": "/home/cachyanno/Downloads/Hamzah.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASEURL}}/api/assets/photo",
+              "host": [
+                "{{BASEURL}}"
+              ],
+              "path": [
+                "api",
+                "assets",
+                "photo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Succes",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "foto",
+                      "type": "file",
+                      "uuid": "61e73565-878b-4641-89e6-e046305b32f4",
+                      "src": "/home/cachyanno/Downloads/Hamzah.jpg"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{BASEURL}}/api/assets/photo",
+                  "host": [
+                    "{{BASEURL}}"
+                  ],
+                  "path": [
+                    "api",
+                    "assets",
+                    "photo"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Werkzeug/3.1.8 Python/3.14.4"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sat, 09 May 2026 09:15:38 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "148"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"foto_url\": \"/static/uploads/user_1/foto_profil.jpg\"\n    },\n    \"message\": \"Foto profil berhasil diperbarui\",\n    \"status\": \"success\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASEURL}}/api/health",
+          "host": [
+            "{{BASEURL}}"
+          ],
+          "path": [
+            "api",
+            "health"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Health",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASEURL}}/api/health",
+              "host": [
+                "{{BASEURL}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Server",
+              "value": "Werkzeug/3.1.8 Python/3.14.4"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 09 May 2026 08:58:21 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "223"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "http://localhost:3000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": {\n        \"api_status\": \"success\",\n        \"db_message\": \"Koneksi ke PostgreSQL (via SQLAlchemy) berhasil!\",\n        \"db_status\": \"connected\"\n    },\n    \"message\": \"Backend Flask Cevio berjalan normal\",\n    \"status\": \"success\"\n}"
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASEURL",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
