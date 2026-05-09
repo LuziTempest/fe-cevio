@@ -19,18 +19,22 @@ const Navbar = () => {
         <Link href="#" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors">
           Themes
         </Link>
-        <Link href="#" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors">
-          How it works
+        <Link href="/profile" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors">
+          Profile
         </Link>
       </div>
 
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="sm" className="hidden sm:inline-flex rounded-full px-4 text-xs font-bold uppercase">
-          Sign In
-        </Button>
-        <Button size="sm" className="rounded-full px-5 text-xs font-bold uppercase shadow-md">
-          Get Started
-        </Button>
+        <Link href="/login">
+          <Button variant="ghost" size="sm" className="hidden sm:inline-flex rounded-full px-4 text-xs font-bold uppercase">
+            Sign In
+          </Button>
+        </Link>
+        <Link href="/signup">
+          <Button size="sm" className="rounded-full px-5 text-xs font-bold uppercase shadow-md">
+            Get Started
+          </Button>
+        </Link>
         <Button variant="ghost" size="icon" className="md:hidden rounded-full">
           <List size={20} weight="bold" />
         </Button>

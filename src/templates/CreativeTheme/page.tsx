@@ -1,6 +1,5 @@
 "use client";
 
-import { dummyData } from "@/data/dummy";
 import { Wix_Madefor_Text } from "next/font/google";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { TextAlignJustify } from "lucide-react";
 import Image from "next/image";
+import { PortfolioData } from "@/types/portfolio";
 
 const wixMadeforText = Wix_Madefor_Text({
   weight: "400",
@@ -66,15 +66,15 @@ const NavLinks = ({
   </div>
 );
 
-export default function SandboxPage() {
+export default function CreativeTheme({ data }: { data: PortfolioData }) {
   const [page, setPage] = useState("about");
 
   return (
     <div className={`w-full bg-[#1F1F1F] min-h-screen ${wixMadeforText.className}`}>
       <nav className="w-full bg-[#1F1F1F] flex items-center justify-between p-6">
         <div className="flex items-center gap-2">
-          <h1 className="text-[#FEFEEA] md:text-2xl font-bold">{dummyData.name}</h1>
-          <p className="text-[#FEFEEA] md:text-2xl font-bold">[{dummyData.role}]</p>
+          <h1 className="text-[#FEFEEA] md:text-2xl font-bold">{data.name}</h1>
+          <p className="text-[#FEFEEA] md:text-2xl font-bold">[{data.role}]</p>
         </div>
 
         {/* Desktop Navigation */}
@@ -137,15 +137,15 @@ export default function SandboxPage() {
       </nav>
 
       <div>
-        {page === "about" && <AboutMe />}
-        {page === "experience" && <Experience />}
-        {page === "skills" && <Skills />}
+        {page === "about" && <AboutMe data={data} setPage={setPage} />}
+        {page === "experience" && <Experience data={data} />}
+        {page === "skills" && <Skills data={data} />}
       </div>
     </div>
   );
 }
 
-function AboutMe() {
+function AboutMe({ data, setPage }: { data: PortfolioData; setPage: (p: string) => void }) {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="bg-[#B7AAFC] w-full md:w-1/2 p-4 md:p-8">
@@ -155,8 +155,8 @@ function AboutMe() {
         <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-4">
           <div className="rounded-lg overflow-hidden w-full sm:w-1/2 md:w-full lg:w-1/2 relative aspect-3/4 border-lg border-muted-foreground">
             <Image
-              src={dummyData.profileImage}
-              alt={dummyData.name}
+              src={data.profileImage}
+              alt={data.name}
               width={600}
               height={800}
               className="w-full h-full object-cover"
@@ -164,23 +164,29 @@ function AboutMe() {
           </div>
           <div className="flex flex-col justify-end">
             <p className="text-2xl md:text-4xl text-[#1F1F1F] sm:pl-4 md:pl-0 lg:pl-4 font-bold">
-              {dummyData.name}
+              {data.name}
             </p>
             <p className="text-xl md:text-2xl text-[#1F1F1F] sm:pl-4 md:pl-0 lg:pl-4 pb-4 font-bold">
-              {dummyData.role}
+              {data.role}
             </p>
           </div>
         </div>
       </div>
       <div className="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center">
         <p className="text-2xl md:text-5xl text-[#FEFEEA] leading-tight">
-          {dummyData.profile}
+          {data.profile}
         </p>
         <div className="mt-8 flex flex-wrap gap-4">
-          <Button className="text-lg md:text-xl p-6 md:p-8 rounded-full bg-[#AC9E33] font-bold">
+          <Button
+            className="text-lg md:text-xl p-6 md:p-8 rounded-full bg-[#AC9E33] font-bold"
+            onClick={() => setPage("experience")}
+          >
             Experience
           </Button>
-          <Button className="text-lg md:text-xl p-6 md:p-8 rounded-full bg-[#AC9E33] font-bold">
+          <Button
+            className="text-lg md:text-xl p-6 md:p-8 rounded-full bg-[#AC9E33] font-bold"
+            onClick={() => setPage("skills")}
+          >
             Skills
           </Button>
         </div>
@@ -189,7 +195,7 @@ function AboutMe() {
   );
 }
 
-function Experience() {
+function Experience({ data }: { data: PortfolioData }) {
   return (
     <div className="p-6 md:p-16 text-[#FEFEEA] mx-auto">
       <div className="flex flex-col md:flex-row items-center md:items-baseline gap-8 mb-16">
@@ -205,7 +211,7 @@ function Experience() {
           </div>
 
           <div className="space-y-16">
-            {dummyData.experience.map((exp, index) => (
+            {data.experience.map((exp, index) => (
               <div key={index} className="flex flex-col">
                 <p className="text-xl font-bold mb-4">{exp.duration}</p>
                 <div className="bg-[#B7AAFC] text-[#1F1F1F] p-6 mb-6">
@@ -232,7 +238,7 @@ function Experience() {
           </div>
 
           <div className="space-y-16">
-            {dummyData.education.map((edu, index) => (
+            {data.education.map((edu, index) => (
               <div key={index} className="flex flex-col">
                 <p className="text-xl font-bold mb-4">{edu.duration}</p>
                 <div className="bg-[#B7AAFC] text-[#1F1F1F] p-6 mb-6">
@@ -255,7 +261,7 @@ function Experience() {
   );
 }
 
-function Skills() {
+function Skills({ data }: { data: PortfolioData }) {
   return (
     <div className="p-6 md:p-16 text-[#FEFEEA] mx-auto min-h-[calc(100vh-100px)]">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
@@ -266,7 +272,7 @@ function Skills() {
             <h2 className="text-5xl md:text-6xl font-bold tracking-tight">Skills</h2>
           </div>
           <div className="flex flex-wrap gap-4">
-            {dummyData.skills.map((skill, index) => (
+            {data.skills.map((skill, index) => (
               <div
                 key={index}
                 className="px-6 py-3 rounded-full border-2 border-[#AC9E33] text-[#AC9E33] text-xl font-bold hover:bg-[#AC9E33] hover:text-[#1F1F1F] transition-colors cursor-default"
@@ -284,7 +290,7 @@ function Skills() {
             <h2 className="text-5xl md:text-6xl font-bold tracking-tight">Languages</h2>
           </div>
           <div className="flex flex-wrap gap-4">
-            {dummyData.languages.map((lang, index) => (
+            {data.languages.map((lang, index) => (
               <div
                 key={index}
                 className="px-6 py-3 rounded-full bg-[#B7AAFC] text-[#1F1F1F] text-xl font-bold hover:bg-[#B7AAFC]/80 transition-colors cursor-default"
