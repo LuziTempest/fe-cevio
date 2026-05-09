@@ -17,6 +17,7 @@ import {
   Sun,
   Moon
 } from "lucide-react";
+import { SignOut } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { usePortfolio } from "@/hooks/use-portfolio";
@@ -41,7 +42,7 @@ type TabType = "profile" | "preview";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<TabType>("profile");
-  const { useMe } = useAuth();
+  const { useMe, logout } = useAuth();
   const { usePortfolios, updatePortfolioPhoto } = usePortfolio();
   const { data: user, isLoading: userLoading } = useMe();
   const { data: portfolios, isLoading: portfoliosLoading } = usePortfolios();
@@ -105,6 +106,14 @@ export default function ProfilePage() {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("File Too Large", {
+          description: "Profile image size cannot exceed 10MB"
+        });
+        event.target.value = "";
+        return;
+      }
+
       const formData = new FormData();
       formData.append("foto", file);
 
@@ -115,27 +124,29 @@ export default function ProfilePage() {
         }
       });
     }
-  };
-  const triggerUpload = () => {
+  };  const triggerUpload = () => {
     fileInputRef.current?.click();
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Shared Global Navbar */}
+      <Navbar />
+
       {/* Internal Sub-Navbar */}
       <div className="fixed top-24 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 p-1 bg-background/50 backdrop-blur-md border border-border rounded-full shadow-lg">
-        <Button
-          variant={activeTab === "profile" ? "default" : "ghost"}
-          size="sm"
+        <Button 
+          variant={activeTab === "profile" ? "default" : "ghost"} 
+          size="sm" 
           className="rounded-full px-6 transition-all"
           onClick={() => setActiveTab("profile")}
         >
           <LayoutDashboard className="w-4 h-4 mr-2" />
           Profile
         </Button>
-        <Button
-          variant={activeTab === "preview" ? "default" : "ghost"}
-          size="sm"
+        <Button 
+          variant={activeTab === "preview" ? "default" : "ghost"} 
+          size="sm" 
           className="rounded-full px-6 transition-all"
           onClick={() => setActiveTab("preview")}
         >
@@ -214,6 +225,14 @@ export default function ProfilePage() {
                 >
                   Generate New Portfolio
                 </Button>
+                <Button 
+                  variant="ghost" 
+                  className="w-full rounded-xl py-6 font-bold uppercase tracking-wider text-[10px] text-destructive hover:text-destructive hover:bg-destructive/10 transition-all"
+                  onClick={logout}
+                >
+                  <SignOut size={16} className="mr-2" />
+                  Logout Account
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -260,9 +279,9 @@ export default function ProfilePage() {
                   <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="picture">Picture</Label>
                     <div className="flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={triggerUpload}
+                      <Button 
+                        variant="outline" 
+                        onClick={triggerUpload} 
                         className="w-full justify-start text-muted-foreground font-normal"
                         disabled={updatePortfolioPhoto.isPending}
                       >

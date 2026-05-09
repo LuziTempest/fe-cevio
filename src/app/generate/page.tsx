@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { usePortfolio } from "@/hooks/use-portfolio";
 import { usePortfolioStore } from "@/store/use-portfolio-store";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const themes = [
   {
@@ -55,8 +56,16 @@ export default function GeneratePage() {
   const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      if (selectedFile.size > 10 * 1024 * 1024) {
+        toast.error("File Too Large", {
+          description: "CV file size cannot exceed 10MB"
+        });
+        e.target.value = ""; // Clear input
+        return;
+      }
+      setFile(selectedFile);
     }
   };
 

@@ -97,6 +97,14 @@ export default function SandboxPage() {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("File Too Large", {
+          description: "Profile image size cannot exceed 10MB"
+        });
+        event.target.value = "";
+        return;
+      }
+
       const formData = new FormData();
       formData.append("foto", file);
       
