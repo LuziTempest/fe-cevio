@@ -31,11 +31,13 @@ import { usePortfolioStore } from "@/store/use-portfolio-store";
 import { usePortfolio } from "@/hooks/use-portfolio";
 import { PortfolioData, PortfolioContent } from "@/types/portfolio";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 type ThemeType = "minimalist" | "professional" | "creative";
 
 export default function SandboxPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { generatedData, activeTheme: storeTheme, setActiveTheme: setStoreTheme } = usePortfolioStore();
   const { save, uploadPhoto } = usePortfolio();
   
@@ -136,9 +138,12 @@ export default function SandboxPage() {
     };
 
     save.mutate(saveRequest, {
-      onSuccess: (response) => {
+      onSuccess: async () => {
         const slug = portfolioTitle.toLowerCase().replace(/\s+/g, "-");
         setSavedLink(`${window.location.origin}/p/${slug}`);
+        
+        // Refetch portfolio data so profile page shows fresh data immediately
+        await queryClient.refetchQueries({ queryKey: ["portfolios"] });
         
         // Redirect to profile after a short delay to show success
         setTimeout(() => {

@@ -410,35 +410,31 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     touch?: ReturnType<typeof createTouchTexture>;
     liquidEffect?: Effect;
   } | null>(null);
-  const prevConfigRef = useRef<ReinitConfig | null>(null);
+
+  const autoPauseRef = useRef(autoPauseOffscreen);
+  useEffect(() => {
+    autoPauseRef.current = autoPauseOffscreen;
+  }, [autoPauseOffscreen]);
+
+  // Initialization & Teardown Effect
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     speedRef.current = speed;
-    const needsReinitKeys: (keyof ReinitConfig)[] = ['antialias', 'liquid', 'noiseAmount'];
-    const cfg: ReinitConfig = { antialias, liquid, noiseAmount };
-    let mustReinit = false;
-    if (!threeRef.current) mustReinit = true;
-    else if (prevConfigRef.current) {
-      for (const k of needsReinitKeys)
-        if (prevConfigRef.current[k] !== cfg[k]) {
-          mustReinit = true;
-          break;
-        }
+
+    // Clean up previous instance just in case
+    if (threeRef.current) {
+      const t = threeRef.current;
+      t.resizeObserver?.disconnect();
+      if (t.raf) cancelAnimationFrame(t.raf);
+      t.quad?.geometry.dispose();
+      t.material.dispose();
+      t.composer?.dispose();
+      t.renderer.dispose();
+      t.renderer.forceContextLoss();
+      if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
+      threeRef.current = null;
     }
-    if (mustReinit) {
-      if (threeRef.current) {
-        const t = threeRef.current;
-        t.resizeObserver?.disconnect();
-        cancelAnimationFrame(t.raf!);
-        t.quad?.geometry.dispose();
-        t.material.dispose();
-        t.composer?.dispose();
-        t.renderer.dispose();
-        t.renderer.forceContextLoss();
-        if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
-        threeRef.current = null;
-      }
       const canvas = document.createElement('canvas');
       const renderer = new THREE.WebGLRenderer({
         canvas,
@@ -582,8 +578,10 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         passive: true
       });
       let raf = 0;
+      let destroyed = false;
       const animate = () => {
-        if (autoPauseOffscreen && !visibilityRef.current.visible) {
+        if (destroyed) return;
+        if (autoPauseRef.current && !visibilityRef.current.visible) {
           raf = requestAnimationFrame(animate);
           return;
         }
@@ -625,37 +623,13 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         touch,
         liquidEffect
       };
-    } else {
-      const t = threeRef.current!;
-      t.uniforms.uShapeType.value = SHAPE_MAP[variant] ?? 0;
-      t.uniforms.uPixelSize.value = pixelSize * t.renderer.getPixelRatio();
-      t.uniforms.uColor.value.set(color);
-      t.uniforms.uScale.value = patternScale;
-      t.uniforms.uDensity.value = patternDensity;
-      t.uniforms.uPixelJitter.value = pixelSizeJitter;
-      t.uniforms.uEnableRipples.value = enableRipples ? 1 : 0;
-      t.uniforms.uRippleIntensity.value = rippleIntensityScale;
-      t.uniforms.uRippleThickness.value = rippleThickness;
-      t.uniforms.uRippleSpeed.value = rippleSpeed;
-      t.uniforms.uEdgeFade.value = edgeFade;
-      if (transparent) t.renderer.setClearAlpha(0);
-      else t.renderer.setClearColor(0x000000, 1);
-      if (t.liquidEffect) {
-        const liqEffect = t.liquidEffect as Effect & { uniforms: Map<string, THREE.Uniform> };
-        const uStrength = liqEffect.uniforms.get('uStrength');
-        if (uStrength) uStrength.value = liquidStrength;
-        const uFreq = liqEffect.uniforms.get('uFreq');
-        if (uFreq) uFreq.value = liquidWobbleSpeed;
-      }
-      if (t.touch) t.touch.radiusScale = liquidRadius;
-    }
-    prevConfigRef.current = cfg;
+
     return () => {
-      if (threeRef.current && mustReinit) return;
+      destroyed = true;
+      if (raf) cancelAnimationFrame(raf);
       if (!threeRef.current) return;
       const t = threeRef.current;
       t.resizeObserver?.disconnect();
-      cancelAnimationFrame(t.raf!);
       t.quad?.geometry.dispose();
       t.material.dispose();
       t.composer?.dispose();
@@ -664,10 +638,37 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
       if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
       threeRef.current = null;
     };
+  }, [antialias, liquid, noiseAmount]);
+
+  // Uniform Updates Effect
+  useEffect(() => {
+    speedRef.current = speed;
+    if (!threeRef.current) return;
+    const t = threeRef.current;
+    t.uniforms.uShapeType.value = SHAPE_MAP[variant] ?? 0;
+    t.uniforms.uPixelSize.value = pixelSize * t.renderer.getPixelRatio();
+    t.uniforms.uColor.value.set(color);
+    t.uniforms.uScale.value = patternScale;
+    t.uniforms.uDensity.value = patternDensity;
+    t.uniforms.uPixelJitter.value = pixelSizeJitter;
+    t.uniforms.uEnableRipples.value = enableRipples ? 1 : 0;
+    t.uniforms.uRippleIntensity.value = rippleIntensityScale;
+    t.uniforms.uRippleThickness.value = rippleThickness;
+    t.uniforms.uRippleSpeed.value = rippleSpeed;
+    t.uniforms.uEdgeFade.value = edgeFade;
+    
+    if (transparent) t.renderer.setClearAlpha(0);
+    else t.renderer.setClearColor(0x000000, 1);
+    
+    if (t.liquidEffect) {
+      const liqEffect = t.liquidEffect as Effect & { uniforms: Map<string, THREE.Uniform> };
+      const uStrength = liqEffect.uniforms.get('uStrength');
+      if (uStrength) uStrength.value = liquidStrength;
+      const uFreq = liqEffect.uniforms.get('uFreq');
+      if (uFreq) uFreq.value = liquidWobbleSpeed;
+    }
+    if (t.touch) t.touch.radiusScale = liquidRadius;
   }, [
-    antialias,
-    liquid,
-    noiseAmount,
     pixelSize,
     patternScale,
     patternDensity,
@@ -681,7 +682,6 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     liquidStrength,
     liquidRadius,
     liquidWobbleSpeed,
-    autoPauseOffscreen,
     variant,
     color,
     speed
